@@ -13,7 +13,12 @@ function ContactsList() {
         </a>
       </li>
       <li className="contacts-list__item">
-        <a className="contacts-list__link" href="#">
+        <a
+          className="contacts-list__link"
+          target="_blank"
+          href="https://www.instagram.com/bakir0va_k?igsh=bThzdzlpZ2ZkcXM0&utm_source=qr"
+          rel="noreferrer"
+        >
           <img className="contacts-list__picture" src={instagram} />
         </a>
       </li>

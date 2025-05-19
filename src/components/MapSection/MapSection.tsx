@@ -18,7 +18,7 @@ function MapSection() {
           <dt className="contacts__dt">E-mail</dt>
           <dd className="contacts__dd">
             <a className="contacts__mail-link" href="mailto:info@maroon.ru">
-              info@maroon.ru
+              kanykejbakirova48@gmail.com
             </a>
           </dd>
         </dl>

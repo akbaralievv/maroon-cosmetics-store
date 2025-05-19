@@ -18,7 +18,7 @@ interface OrderFormData {
 
 function CartPage() {
   const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
-  const { translate,currentLang } = useTranslation();
+  const { translate, currentLang } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<OrderFormData>({
@@ -81,10 +81,31 @@ function CartPage() {
     }
     if (!formData.phone.trim()) {
       errors.phone = translate("formErrors.phone");
-    } else if (
-      !/^\+?[0-9]{10,12}$/.test(formData.phone.replace(/[\s()-]/g, ""))
-    ) {
-      errors.phone = translate("formErrors.invalidPhone");
+    } else {
+      // More flexible phone validation - accepts various formats
+      const digitsOnly = formData.phone.replace(/\D/g, "");
+
+      // Handle Kyrgyz phone numbers in various formats
+      // Valid formats: 0771007644, 771007644, 996771007644, +996771007644, (771)-007-644
+      let isValid = false;
+
+      if (
+        digitsOnly.length === 10 &&
+        (digitsOnly.startsWith("0") || !digitsOnly.startsWith("0"))
+      ) {
+        // Format: 0771007644 or 771007644
+        isValid = true;
+      } else if (digitsOnly.length === 12 && digitsOnly.startsWith("996")) {
+        // Format: 996771007644 or +996771007644
+        isValid = true;
+      } else if (digitsOnly.length === 9 && !digitsOnly.startsWith("0")) {
+        // Format without leading zero: 771007644
+        isValid = true;
+      }
+
+      if (!isValid) {
+        errors.phone = translate("formErrors.invalidPhone");
+      }
     }
     if (!formData.address.trim()) {
       errors.address = translate("formErrors.address");
@@ -164,7 +185,9 @@ ${translate("order.address")}: ${formData.address}`;
               <div className="cart-item__info">
                 <h3 className="cart-item__name">{item.name}</h3>
                 <p className="cart-item__description">
-                  {currentLang==='ru'?item.shortDescription:item.shortDescription_kg}
+                  {currentLang === "ru"
+                    ? item.shortDescription
+                    : item.shortDescription_kg}
                 </p>
                 <div className="cart-item__details">
                   <span className="cart-item__volume">
@@ -284,7 +307,7 @@ ${translate("order.address")}: ${formData.address}`;
               id="phone"
               value={formData.phone}
               onChange={handleInputChange("phone")}
-              placeholder="+7 (999) 999-99-99"
+              placeholder={translate("order.phonePlaceholder")}
               disabled={isSubmitting}
             />
             {formErrors.phone && (

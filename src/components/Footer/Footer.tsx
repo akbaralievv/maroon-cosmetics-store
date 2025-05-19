@@ -24,7 +24,7 @@ function Footer() {
       </div>
       <div className="footer__copyright-area">
         <p className="footer__copyright-text">
-          Maroon <img src={copyrightSvg} alt="Copyright" /> 2020{" "}
+          Maroon <img src={copyrightSvg} alt="Copyright" /> 2025{" "}
           {translate("footer.allRightsReserved")}
         </p>
         <Link className="footer__copyright-link" to="#">
